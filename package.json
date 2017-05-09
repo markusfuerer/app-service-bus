@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kusigit/app-service-bus.git"
+    "url": "git+https://github.com/markusfuerer/app-service-bus.git"
   },
   "author": "Markus Fürer",
   "license": "ISC",
