@@ -1,6 +1,6 @@
 {
   "name": "app-service-bus",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Module to support message queue brokers (for example RabbitMQ)",
   "main": "index.js",
   "scripts": {

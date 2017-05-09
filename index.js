@@ -1,13 +1,12 @@
 'use strict';
 
 class AppServiceBus {
-	constructor() {
+	constructor(host) {
 		const amqp = require('amqplib');
-		const busHost = process.env.RABBITMQ_SERVICE_HOST || 'localhost';
 
 		this.type = 'topic';
 		this.exchange = 'events';
-		this.conn = amqp.connect('amqp://' + busHost).catch(console.error);
+		this.conn = amqp.connect('amqp://' + (host || 'localhost')).catch(console.error);
 	}
 
 	publish(key, message) {
@@ -53,4 +52,4 @@ class AppServiceBus {
 	}
 }
 
-module.exports = new AppServiceBus();
+module.exports = AppServiceBus;
