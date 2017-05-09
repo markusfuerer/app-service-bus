@@ -1,0 +1,21 @@
+{
+  "name": "app-service-bus",
+  "version": "0.0.2",
+  "description": "Module to support message queue brokers (for example RabbitMQ)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=4.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kusigit/app-service-bus.git"
+  },
+  "author": "Markus Fürer",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.5.1"
+  }
+}
