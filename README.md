@@ -6,8 +6,7 @@
 
 
 ```
-    const AppServiceBus = require('app-service-bus');
-    const bus = new AppServiceBus();
+    const bus = require('app-service-bus')();
     
     bus.subscribe('event.*', (key, content) => {
       console.log(key, content);

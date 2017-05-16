@@ -10,46 +10,45 @@ class AppServiceBus {
 	}
 
 	publish(key, message) {
-		let self = this;
 		message = JSON.stringify(message || {});
 
 		if (this.channel) {
-			this.channel.publish(this.exchange, key, new Buffer(message));
+			return this.channel.publish(this.exchange, key, new Buffer(message));
 		}
 		else {
-			this.conn.then(function (conn) {
-				conn.createChannel().then(function (ch) {
-					ch.assertExchange(self.exchange, self.type, { durable: false });
-					ch.publish(self.exchange, key, new Buffer(message));
-					self.channel = ch;
+			return this.conn.then(conn => {
+				return conn.createChannel().then(channel => {
+					this.channel = channel;
+					channel.assertExchange(this.exchange, this.type, { durable: false });
+					return channel.publish(this.exchange, key, new Buffer(message));
 				});
 			});
 		}
 	}
 
 	subscribe(key, callback) {
-		let self = this;
-
 		function onMessage(msg) {
 			let content = JSON.parse(msg.content.toString());
 			callback(msg.fields.routingKey, content);
 		}
 
-		this.conn.then(function (conn) {
-			conn.createChannel().then(function (ch) {
-				ch.assertExchange(self.exchange, self.type, { durable: false });
-				ch.assertQueue('', { exclusive: true })
-					.then(function (qok) {
-						return ch.bindQueue(qok.queue, self.exchange, key).then(function () {
+		return this.conn.then(conn => {
+			return conn.createChannel().then(channel => {
+				channel.assertExchange(this.exchange, this.type, { durable: false });
+				return channel.assertQueue('', { exclusive: true })
+					.then(qok => {
+						return channel.bindQueue(qok.queue, this.exchange, key).then(() => {
 							return qok.queue;
 						});
 					})
-					.then(function (queue) {
-						return ch.consume(queue, onMessage);
+					.then(queue => {
+						return channel.consume(queue, onMessage);
 					});
 			});
 		});
 	}
 }
 
-module.exports = AppServiceBus;
+module.exports = (host) => {
+    return new AppServiceBus(host);
+};
