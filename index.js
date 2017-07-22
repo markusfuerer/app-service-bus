@@ -6,7 +6,7 @@ class AppServiceBus {
 
 		this.type = 'topic';
 		this.exchange = 'events';
-		this.conn = amqp.connect('amqp://' + (host || 'localhost')).catch(console.error);
+		this.conn = amqp.connect(host || 'amqp://localhost').catch(console.error);
 	}
 
 	publish(key, message) {
